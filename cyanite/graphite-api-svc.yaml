@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: graphite-api
+  name: graphite-api
+spec:
+  ports:
+  - name: http
+    port: 8000
+  selector:
+    name: graphite-api

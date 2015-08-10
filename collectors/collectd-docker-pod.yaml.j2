@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: collectd-docker
+spec:
+  containers:
+  - name: collectd-docker
+    image: altvnk/collectd-docker
+    resources:
+      limits:
+        cpu: 200m
+    env:
+    - name: "GRAPHITE_HOST"
+      value: "graphite"
+    - name: "GRAPHITE_PORT"
+      value: "2003"
+    - name: "COLLECTD_HOST"
+      value: "{{ inventory_hostname }}"
+    - name: "COLLECTD_DOCKER_APP"
+      value: "metrics"
+    - name: "COLLECTD_DOCKER_TASK"
+      value: "collector-docker"
+    volumeMounts:
+    - name: dockersock
+      mountPath: /var/run/docker.sock
+  volumes:
+  - name: dockersock
+    hostPath:
+      path: /var/run/docker.sock

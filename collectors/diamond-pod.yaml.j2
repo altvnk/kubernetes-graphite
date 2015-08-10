@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: diamond
+spec:
+  containers:
+  - name: diamond
+    image: lesaux/diamond-containercollector
+    resources:
+      limits:
+        cpu: 200m
+    env:
+    - name: "GRAPHITE_HOST"
+      value: "graphite"
+    - name: "GRAPHITE_PORT"
+      value: "2003"
+    - name: "INTERVAL"
+      value: "5"
+    - name: "DOCKER_HOSTNAME"
+      value: "{{ inventory_hostname }}"
+    - name: "COLLECTD_DOCKER_APP"
+      value: "metrics"
+    - name: "COLLECTD_DOCKER_TASK"
+      value: "collector-diamond"
+    volumeMounts:
+    - name: systemproc
+      mountPath: /host_proc
+    - name: dockersock
+      mountPath: /var/run/docker.sock
+  volumes:
+  - name: systemproc
+    hostPath:
+      path: /proc
+  - name: dockersock
+    hostPath:
+      path: /var/run/docker.sock

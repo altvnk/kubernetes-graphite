@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: graphite
+  labels:
+    name: graphite
+spec:
+  replicas: 1
+  selector:
+    name: graphite
+  template:
+    metadata:
+      labels:
+        name: graphite
+    spec:
+      containers:
+      - name: graphite
+        image: altvnk/graphite
+        ports:
+        - name: graphite
+          containerPort: 2003
+        - name: pickle
+          containerPort: 2004
+        - name: api
+          containerPort: 80
+        - name: statsd
+          containerPort: 8025
+        env:
+          - name: "COLLECTD_DOCKER_APP"
+            value: "metrics"
+          - name: "COLLECTD_DOCKER_TASK"
+            value: "graphite"

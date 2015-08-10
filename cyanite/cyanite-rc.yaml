@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: cyanite
+  labels:
+    name: cyanite
+spec:
+  replicas: 1
+  selector:
+    name: cyanite
+  template:
+    metadata:
+      labels:
+        name: cyanite
+    spec:
+      containers:
+      - name: cyanite-docker
+        image: docker.io/altvnk/cyanite:latest
+        ports:
+        - name: http
+          containerPort: 2003
+        - name: pickle
+          containerPort: 2004
+        - name: api
+          containerPort: 8080
+        env:
+        - name: MAX_HEAP_SIZE
+          value: 1024m
+        - name: CASSANDRA_HOST
+          value: cassandra
+        livenessProbe:
+          httpGet:
+            path: /ping
+            port: 8080
+          initialDelaySeconds: 30
+          timeoutSeconds: 5

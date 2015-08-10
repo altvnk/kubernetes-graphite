@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: graphite-api
+  labels:
+    name: graphite-api
+spec:
+  replicas: 1
+  selector:
+    name: graphite-api
+  template:
+    metadata:
+      labels:
+        name: graphite-api
+    spec:
+      containers:
+      - name: graphite-api
+        image: docker.io/altvnk/graphite-api:latest
+        ports:
+        - name: http
+          containerPort: 8000
